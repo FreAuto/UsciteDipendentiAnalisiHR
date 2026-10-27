@@ -1,0 +1,23 @@
+// =====================================================================
+//  MISURE DAX – UsciteDipendenti
+//  Sono già dentro la dashboard: qui sono elencate per leggerle e riusarle
+// =====================================================================
+
+
+// ---------- tabella dipendenti ----------
+N Dipendenti = COUNTROWS ( dipendenti )
+N Usciti = SUM ( dipendenti[uscito_num] )
+Tasso Uscita = DIVIDE ( [N Usciti], [N Dipendenti] )
+Eta Media Usciti = CALCULATE ( AVERAGE ( dipendenti[eta] ), dipendenti[uscito] = "Sì" )
+Stipendio Medio Usciti = CALCULATE ( AVERAGE ( dipendenti[stipendio_mensile] ), dipendenti[uscito] = "Sì" )
+Stipendio Medio Rimasti = CALCULATE ( AVERAGE ( dipendenti[stipendio_mensile] ), dipendenti[uscito] = "No" )
+Straordinari tra Usciti = DIVIDE ( CALCULATE ( COUNTROWS ( dipendenti ), dipendenti[uscito] = "Sì", dipendenti[straordinari] = "Sì" ), CALCULATE ( COUNTROWS ( dipendenti ), dipendenti[uscito] = "Sì" ) )
+
+// ---------- tabella fattori ----------
+Tasso Fattore = DIVIDE ( SUM ( fattori[usciti] ), SUM ( fattori[dipendenti] ) )
+
+// ---------- tabella reparti_ruoli ----------
+Tasso Ruolo = DIVIDE ( SUM ( reparti_ruoli[usciti] ), SUM ( reparti_ruoli[dipendenti] ) )
+
+// ---------- tabella pesi_modello ----------
+Peso Fattore = SUM ( pesi_modello[peso] )
