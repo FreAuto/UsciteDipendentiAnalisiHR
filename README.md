@@ -1,5 +1,7 @@
 # 👥 Dipendenti che lasciano l'azienda – HR Analytics
 
+![Uscite dei dipendenti](copertina.png)
+
 Progetto di **Francesco Autorino** – Data Analyst.
 
 🛠️ Strumenti: **Excel · Python · Power BI**
@@ -28,7 +30,7 @@ Le 6 domande più piccole:
 
 6️⃣ 🤖 Si può prevedere chi uscirà?
 
-📝 Le risposte complete sono in **02Python/02_CONCLUSIONI.md**.
+📝 Le risposte complete sono in **04Python/CONCLUSIONI.md**.
 
 ---
 
@@ -79,19 +81,46 @@ emp_attrition.csv ──► ❌ 1.470 righe ──────► ✅ 1.470 righ
 
 ---
 
-## 📁 5. I file in questo repository
+## 📁 5. Tutti i file, uno per uno
+
+### 📄 Cartella principale
 
 | File | A cosa serve |
 |---|---|
 | `README.md` | Questo file |
-| `DESCRIZIONE_GITHUB.md` | Nome, descrizione e topics del repository |
-| `00_LEGGIMI.md` (in ogni cartella) | Una spiegazione corta di quella cartella |
+| `LEGGIMI.md` (in ogni cartella) | Una spiegazione corta di quella cartella |
 
-### 📂 01Excel
+### 📂 01RaccoltaDati
 
 | File | A cosa serve |
 |---|---|
-| `01_Uscite_Dipendenti_Analisi.xlsx` | 📗 Il file Excel: 405 formule, 0 errori |
+| `01_scarica.py` | 📥 Scarica il dataset dal GitHub di IBM |
+| `02_pulizia.py` | 🧹 Pulisce, traduce e crea le tabelle di analisi |
+
+### 📂 02Dati
+
+**❌ 1GrezziNonPuliti**
+
+| File | Cosa contiene |
+|---|---|
+| `ibm_uscite_dipendenti.csv` | Il file originale: 1.470 righe, 35 colonne (in inglese) |
+
+**✅ 2Puliti**
+
+| File | Righe | Cosa contiene |
+|---|---|---|
+| `dipendenti.csv` | 1.470 | Ogni dipendente, colonne in italiano + 5 fasce + `uscito_num` (1 = uscito) |
+| `fattori.csv` | 71 | Tasso di uscita per ogni valore di 18 fattori (straordinari, età, stipendio…) |
+| `reparti_ruoli.csv` | 11 | Dipendenti, usciti, stipendio ed età media per reparto e ruolo |
+| `pesi_modello.csv` | 38 | Il peso di ogni fattore nel modello di previsione |
+| `registro_pulizia.csv` | 5 | Righe e colonne dopo ogni passo della pulizia |
+
+### 📂 03Excel
+
+| File | A cosa serve |
+|---|---|
+| `Uscite_Dipendenti_Analisi.xlsx` | 📗 Il file Excel: 405 formule, 0 errori |
+| `crea_excel.py` | 🛠️ Lo script che lo crea |
 
 📗 **I fogli del file Excel**
 
@@ -105,20 +134,26 @@ emp_attrition.csv ──► ❌ 1.470 righe ──────► ✅ 1.470 righ
 | Dati | I 1.470 dipendenti in una tabella Excel con filtri |
 | Controllo | 22 controlli automatici: devono essere tutti ✅ |
 
-### 📂 02Python
+### 📂 04Python
 
 | File | A cosa serve |
 |---|---|
-| `01_analisi_uscite_dipendenti.ipynb` | 📓 Il notebook con tutta l'analisi, già eseguito |
-| `02_CONCLUSIONI.md` | ✅ Le risposte alle 6 domande e le azioni consigliate |
+| `analisi_uscite_dipendenti.ipynb` | 📓 Il notebook con tutta l'analisi, già eseguito |
+| `CONCLUSIONI.md` | ✅ Le risposte alle 6 domande e le azioni consigliate |
+| `Grafici/` | 🖼️ 8 grafici in PNG |
+| `crea_notebook.py` | 🛠️ Lo script che crea il notebook |
 
-### 📂 03PowerBi
+### 📂 05PowerBi
 
 | File | A cosa serve |
 |---|---|
-| `01_UsciteDipendentiDashboard.zip` | ⭐ **La dashboard**: estrai lo zip e apri `UsciteDipendenti_Dashboard.pbip` con Power BI Desktop |
-| `02_UsciteDipendenti_Dashboard.pdf` | 📄 Il PDF della dashboard |
-| `03_misure_DAX.txt` | 🧮 Le misure DAX usate nella dashboard |
+| `UsciteDipendentiDashboard/UsciteDipendenti_Dashboard.pbip` | ⭐ **La dashboard**: doppio clic per aprirla in Power BI Desktop |
+| `UsciteDipendenti_Dashboard.pdf` | 📄 Il PDF della dashboard |
+| `misure_DAX.txt` | 🧮 Le misure DAX usate nella dashboard |
+| `tema_uscite_dipendenti.json` | 🎨 Il tema prugna, corallo e menta (già applicato) |
+| `Immagini/sfondo_pagina.png` | Lo sfondo delle pagine, disegnato da zero |
+| `Script/crea_powerbi.py` | Crea una copia della dashboard (`UsciteDipendentiDashboardBase`) |
+| `Script/crea_immagini.py` | Disegna lo sfondo |
 
 📊 **Le 6 pagine della dashboard**
 
@@ -131,13 +166,17 @@ emp_attrition.csv ──► ❌ 1.470 righe ──────► ✅ 1.470 righ
 
 ---
 
-## 📦 6. Dati e script
+## ▶️ 6. Come rifare tutto
 
-📌 Qui ci sono solo i **risultati**: analisi, query, notebook, file Excel e dashboard.
+```bash
+pip install pandas scikit-learn scipy matplotlib openpyxl nbformat nbconvert pillow
+cd 01RaccoltaDati && python 01_scarica.py && python 02_pulizia.py
+cd ../03Excel && python crea_excel.py
+cd ../04Python && python crea_notebook.py && jupyter nbconvert --to notebook --execute --inplace analisi_uscite_dipendenti.ipynb
+cd ../05PowerBi && python Script/crea_immagini.py && python Script/crea_powerbi.py
+```
 
-📥 I dati si possono riscaricare dalla fonte (link più sotto).
-
-🐍 Gli script Python di raccolta e pulizia dei dati sono disponibili su richiesta.
+💡 Il notebook crea anche `pesi_modello.csv`, usato da Power BI: va eseguito prima di `crea_powerbi.py`.
 
 ---
 
@@ -184,4 +223,4 @@ emp_attrition.csv ──► ❌ 1.470 righe ──────► ✅ 1.470 righ
 
 9️⃣ **Power BI**: dashboard di 6 pagine con filtri, aperta e controllata in Power BI Desktop.
 
-🔟 **Conclusioni**: risposte alle 6 domande e 5 azioni consigliate in `02Python/02_CONCLUSIONI.md`.
+🔟 **Conclusioni**: risposte alle 6 domande e 5 azioni consigliate in `04Python/CONCLUSIONI.md`.
